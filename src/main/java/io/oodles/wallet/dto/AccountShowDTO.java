@@ -4,6 +4,7 @@ public class AccountShowDTO {
     private String name;
     private String address;
     private String public_key;
+    private String balance_info;
 
     public AccountShowDTO() {
     }
@@ -12,6 +13,13 @@ public class AccountShowDTO {
         this.name = name;
         this.address = address;
         this.public_key = public_key;
+    }
+
+    public AccountShowDTO(String name, String address, String public_key, String balance_info) {
+        this.name = name;
+        this.address = address;
+        this.public_key = public_key;
+        this.balance_info = balance_info;
     }
 
     public String getName() {
@@ -38,12 +46,21 @@ public class AccountShowDTO {
         this.public_key = public_key;
     }
 
+    public String getBalance_info() {
+        return balance_info;
+    }
+
+    public void setBalance_info(String balance_info) {
+        this.balance_info = balance_info;
+    }
+
     @Override
     public String toString() {
         return "AccountShowDTO{" +
                 "name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", public_key='" + public_key + '\'' +
+                ", balance_info='" + balance_info + '\'' +
                 '}';
     }
 }
