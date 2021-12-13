@@ -19,7 +19,7 @@ public class AccountController {
     @Autowired
     private AccountMnemonicService accountMnemonicService;
 
-    @RequestMapping(path = "/createwalletccountname/{account_name}", method = RequestMethod.GET,produces = {"application/json"})
+    @RequestMapping(path = "/createwalletccountname/{account_name}", method = RequestMethod.GET)
     public ResponseEntity<WalletAccountEntity> createAccount(@PathVariable("account_name") String ac_name) throws IOException, InterruptedException {
        return new ResponseEntity<WalletAccountEntity>(accountMnemonicService.createAccount(ac_name), HttpStatus.OK);
     }
