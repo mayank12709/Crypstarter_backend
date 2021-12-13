@@ -20,7 +20,7 @@ public class AccountController {
     private AccountMnemonicService accountMnemonicService;
 
     @GetMapping(path = "/createwalletccountname/{account_name}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WalletAccountEntity> createAccount(@PathVariable("account_name") String ac_name) throws IOException, InterruptedException {
+    public ResponseEntity<WalletAccountEntity> createAccount(@PathVariable(value = "account_name" , required = false) String ac_name) throws IOException, InterruptedException {
        return new ResponseEntity<WalletAccountEntity>(accountMnemonicService.createAccount(ac_name), HttpStatus.OK);
     }
 
@@ -33,7 +33,7 @@ public class AccountController {
     }
 
     @GetMapping(path = "/accountshow/{account_name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountShowDTO> importAccount(@PathVariable("account_name") String ac_name) throws IOException, InterruptedException {
+    public ResponseEntity<AccountShowDTO> importAccount(@PathVariable(value = "account_name" , required = false) String ac_name) throws IOException, InterruptedException {
         return new ResponseEntity<AccountShowDTO>(accountMnemonicService.showAccount(ac_name), HttpStatus.OK);
     }
 
