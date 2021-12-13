@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@CrossOrigin(value = "*")
 @RestController
 @RequestMapping("/common/api/v1")
+@CrossOrigin(origins = "*")
 public class AccountController {
 
     @Autowired
