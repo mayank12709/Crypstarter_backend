@@ -2,6 +2,8 @@ package io.oodles.wallet.services;
 
 import io.oodles.wallet.dto.AccountShowDTO;
 import io.oodles.wallet.model.WalletAccountEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,10 +19,13 @@ import java.util.stream.Collectors;
 @Service
 public class AccountMnemonicServiceImpl  implements  AccountMnemonicService{
 
+    Logger logger = LoggerFactory.getLogger(AccountMnemonicServiceImpl.class);
+
     @Autowired
     private RestTemplate restTemplate;
 
     public BufferedReader commonLogicImplementation(String cmd) throws IOException, InterruptedException{
+        logger.debug("Inside commonLogicImplementation {}", cmd);
         Runtime run = Runtime.getRuntime();
         Process pr = run.exec(cmd);
         pr.waitFor();
@@ -30,6 +35,7 @@ public class AccountMnemonicServiceImpl  implements  AccountMnemonicService{
 
     @Override
     public WalletAccountEntity createAccount(String account_name) throws IOException, InterruptedException{
+        logger.debug("Inside createAccountService {}", account_name);
         String  cmd = "starport account create "+ account_name;
         BufferedReader br = commonLogicImplementation(cmd);
         String line = "", menmonic = "";
@@ -58,6 +64,7 @@ public class AccountMnemonicServiceImpl  implements  AccountMnemonicService{
 
     @Override
     public AccountShowDTO showAccount(String ac_name)throws IOException, InterruptedException {
+        logger.debug("Inside showAccount {} ", ac_name);
         List<String> list = new LinkedList<>();
         String  cmd = "starport account show "+ac_name +" --address-prefix cst";
         BufferedReader br = commonLogicImplementation(cmd);
@@ -70,7 +77,6 @@ public class AccountMnemonicServiceImpl  implements  AccountMnemonicService{
         }
         String uri = "http://testapi.crypstarter.network/cosmos/bank/v1beta1/balances/"+list.get(1);
         String ob = restTemplate.getForObject(uri, String.class);
-
         return new AccountShowDTO(list.get(0), list.get(1), list.get(2), ob);
     }
 }
