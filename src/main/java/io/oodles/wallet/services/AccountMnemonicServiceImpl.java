@@ -1,6 +1,7 @@
 package io.oodles.wallet.services;
 
 import io.oodles.wallet.dto.AccountShowDTO;
+import io.oodles.wallet.model.StakingEntity;
 import io.oodles.wallet.model.WalletAccountEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,8 +76,21 @@ public class AccountMnemonicServiceImpl  implements  AccountMnemonicService{
                 list = Arrays.stream(line.split("\\s+")).collect(Collectors.toList());
             }
         }
+        System.out.println(list.get(1));
         String uri = "http://api.crypstarter.network/cosmos/bank/v1beta1/balances/"+list.get(1);
         String ob = restTemplate.getForObject(uri, String.class);
         return new AccountShowDTO(list.get(0), list.get(1), list.get(2), ob);
+    }
+
+    @Override
+    public String stakingAmount(StakingEntity stakingEntity) throws IOException, InterruptedException {
+        logger.debug("Staking : {}" , "stakingAmount Impl called");
+        String cmd = "crypstarterd tx staking delegate "+ stakingEntity.getDelvaloper_address()+" "+ stakingEntity.getStaking_amount()+" --from=$(crypstarterd keys show -a + "+stakingEntity.getFrom_key_name()+") --gas="+stakingEntity.getGas()+" --gas-prices="+stakingEntity.getGas_price() +"CST";
+        BufferedReader br = commonLogicImplementation(cmd);
+        String line = "", response = "";
+        while ((line=br.readLine())!=null) {
+            response += line;
+        }
+        return "{\n"+response+ "\n}";
     }
 }

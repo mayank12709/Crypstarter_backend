@@ -1,6 +1,7 @@
 package io.oodles.wallet.controller;
 
 import io.oodles.wallet.dto.AccountShowDTO;
+import io.oodles.wallet.model.StakingEntity;
 import io.oodles.wallet.model.WalletAccountEntity;
 import io.oodles.wallet.services.AccountMnemonicService;
 import org.slf4j.Logger;
@@ -41,6 +42,12 @@ public class AccountController {
     public ResponseEntity<AccountShowDTO> importAccount(@PathVariable(value = "account_name" , required = false) String ac_name) throws IOException, InterruptedException {
         logger.debug("importAccount {}",ac_name);
         return new ResponseEntity<AccountShowDTO>(accountMnemonicService.showAccount(ac_name), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/stake/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> stakingAmount(@RequestBody StakingEntity stakingEntity) throws IOException, InterruptedException {
+        logger.debug("stakingAmount {}", "Inside Staking");
+        return new ResponseEntity<String>(accountMnemonicService.stakingAmount(stakingEntity), HttpStatus.OK);
     }
 
 
