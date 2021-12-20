@@ -75,7 +75,7 @@ public class AccountMnemonicServiceImpl  implements  AccountMnemonicService{
                 list = Arrays.stream(line.split("\\s+")).collect(Collectors.toList());
             }
         }
-        String uri = "http://testapi.crypstarter.network/cosmos/bank/v1beta1/balances/"+list.get(1);
+        String uri = "http://api.crypstarter.network/cosmos/bank/v1beta1/balances/"+list.get(1);
         String ob = restTemplate.getForObject(uri, String.class);
         return new AccountShowDTO(list.get(0), list.get(1), list.get(2), ob);
     }
