@@ -85,8 +85,13 @@ public class AccountMnemonicServiceImpl  implements  AccountMnemonicService{
     @Override
     public String stakingAmount(StakingEntity stakingEntity) throws IOException, InterruptedException {
         logger.debug("Staking : {}" , "stakingAmount Impl called");
-        String cmd = "crypstarterd tx staking delegate "+ stakingEntity.getDelvaloper_address()+" "+ stakingEntity.getStaking_amount()+" --from=$(crypstarterd keys show -a + "+stakingEntity.getFrom_key_name()+") --gas="+stakingEntity.getGas()+" --gas-prices="+stakingEntity.getGas_price() +"CST --yes";
-        BufferedReader br = commonLogicImplementation(cmd);
+
+        String[] cmd = { "bash", "-c", "/home/ubuntu/deposit.sh "+stakingEntity.getDelvaloper_address() +" "+stakingEntity.getStaking_amount()+" "+stakingEntity.getFrom_key_name()+" "+ stakingEntity.getGas()+" "+stakingEntity.getGas_price() + " aman6726"};
+        Process p = Runtime.getRuntime().exec(cmd);
+        p.waitFor();
+        BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+//        String cmd = "crypstarterd tx staking delegate "+ stakingEntity.getDelvaloper_address()+" "+ stakingEntity.getStaking_amount()+" --from=$(crypstarterd keys show -a + "+stakingEntity.getFrom_key_name()+") --gas="+stakingEntity.getGas()+" --gas-prices="+stakingEntity.getGas_price() +"CST --yes";
+//        BufferedReader br = commonLogicImplementation(cmd);
         String line = "", response = "";
         while ((line=br.readLine())!=null) {
             response += line;
