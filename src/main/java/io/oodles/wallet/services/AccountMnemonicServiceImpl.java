@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -86,16 +87,24 @@ public class AccountMnemonicServiceImpl  implements  AccountMnemonicService{
     public String stakingAmount(StakingEntity stakingEntity) throws IOException, InterruptedException {
         logger.debug("Staking : {}" , "stakingAmount Impl called");
 
-        String[] cmd = { "bash", "-c", "/home/ubuntu/deposit.sh "+stakingEntity.getDelvaloper_address() +" "+stakingEntity.getStaking_amount()+" "+stakingEntity.getFrom_key_name()+" "+ stakingEntity.getGas()+" "+stakingEntity.getGas_price() + " aman6726"};
-        Process p = Runtime.getRuntime().exec(cmd);
-        logger.debug("test process: {}", p);
+//        String[] cmd = { "bash", "-c", "/home/ubuntu/deposit.sh "+stakingEntity.getDelvaloper_address() +" "+stakingEntity.getStaking_amount()+" "+stakingEntity.getFrom_key_name()+" "+ stakingEntity.getGas()+" "+stakingEntity.getGas_price() + " aman6726"};
+//        Process p = Runtime.getRuntime().exec(cmd);
+//        logger.debug("test process: {}", p.toString());
 
-        p.waitFor();
+        ProcessBuilder pb = new ProcessBuilder("/home/ubuntu/deposit.sh", stakingEntity.getDelvaloper_address(),
+                stakingEntity.getStaking_amount(), stakingEntity.getFrom_key_name(), stakingEntity.getGas(), stakingEntity.getGas_price(),
+                "aman6726");
+        Process p = pb.start();
+
+        logger.debug("test process: {}", p.getInputStream());
+
+//        p.waitFor();
         BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 //        String cmd = "crypstarterd tx staking delegate "+ stakingEntity.getDelvaloper_address()+" "+ stakingEntity.getStaking_amount()+" --from=$(crypstarterd keys show -a + "+stakingEntity.getFrom_key_name()+") --gas="+stakingEntity.getGas()+" --gas-prices="+stakingEntity.getGas_price() +"CST --yes";
 //        BufferedReader br = commonLogicImplementation(cmd);
         String line = "", response = "";
         while ((line=br.readLine())!=null) {
+            System.out.println(line);
             response += line;
         }
         return "{\n"+response+ "\n}";
