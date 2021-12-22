@@ -19,14 +19,14 @@ import java.io.IOException;
 @CrossOrigin(origins = "*")
 public class AccountController {
 
-    Logger logger = LoggerFactory.getLogger(AccountController.class);
+    public static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
     private AccountMnemonicService accountMnemonicService;
 
     @GetMapping(path = "/createwalletccountname/{account_name}" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WalletAccountEntity> createAccount(@PathVariable(value = "account_name" , required = false) String ac_name) throws IOException, InterruptedException {
-        logger.debug("createAccountMethod {}",ac_name);
+        logger.info("createAccountMethod {}",ac_name);
        return new ResponseEntity<WalletAccountEntity>(accountMnemonicService.createAccount(ac_name), HttpStatus.OK);
     }
 
@@ -40,13 +40,13 @@ public class AccountController {
 
     @GetMapping(path = "/accountshow/{account_name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountShowDTO> importAccount(@PathVariable(value = "account_name" , required = false) String ac_name) throws IOException, InterruptedException {
-        logger.debug("importAccount {}",ac_name);
+        logger.info("importAccount {}",ac_name);
         return new ResponseEntity<AccountShowDTO>(accountMnemonicService.showAccount(ac_name), HttpStatus.OK);
     }
 
     @PostMapping(path = "/stake/", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> stakingAmount(@RequestBody StakingEntity stakingEntity) throws IOException, InterruptedException {
-        logger.debug("stakingAmount {}", "Inside Staking");
+        logger.info("stakingAmount {}", "Inside Staking");
         return new ResponseEntity<String>(accountMnemonicService.stakingAmount(stakingEntity), HttpStatus.OK);
     }
 
